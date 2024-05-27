@@ -7,15 +7,16 @@ interface Filter {
 }
 
 const useFaturaApi = () => {
-  const extractFaturaData = useCallback(
-    (files: File[]): Promise<IFatura[]> => {
-      const formData = new FormData();
-      files.forEach((file) => formData.append("files", file));
+  const extractFaturaData = useCallback((file: File): Promise<IFatura[]> => {
+    const formData = new FormData();
+    formData.append("file", file);
 
-      return apiFactory("faturas/extract-fatura-data", "post", formData);
-    },
-    []
-  );
+    return apiFactory("faturas/extract-fatura-data", "post", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }, []);
 
   const getAllFaturas = useCallback((): Promise<IFatura[]> => {
     return apiFactory("/faturas", "get");
@@ -35,7 +36,10 @@ const useFaturaApi = () => {
   const filterFaturasByNumeroCliente = useCallback(
     (numeroCliente: string, filter: Filter): Promise<IFatura[]> => {
       const queryString = new URLSearchParams(filter).toString();
-      return apiFactory(`faturas/filter/${numeroCliente}?${queryString}`, "get");
+      return apiFactory(
+        `faturas/filter/${numeroCliente}?${queryString}`,
+        "get"
+      );
     },
     []
   );

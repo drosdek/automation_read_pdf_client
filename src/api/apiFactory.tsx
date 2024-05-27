@@ -1,15 +1,16 @@
-import api from './api';
+import api from "./api";
 
-type Method = 'get' | 'post' | 'put' | 'delete';
+type Method = "get" | "post" | "put" | "delete";
 
-const apiFactory = (endpoint: string, method: Method, data?: any) => {
-  const config = {
+const apiFactory = (endpoint: string, method: Method, data?: any, config?: any) => {
+  const requestConfig = {
     url: endpoint,
     method: method,
-    data
+    data,
+    ...config
   };
 
-  return api(config)
+  return api(requestConfig)
     .then(response => response.data)
     .catch(error => {
       console.error('API error:', error);

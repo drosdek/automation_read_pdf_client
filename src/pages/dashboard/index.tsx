@@ -8,6 +8,7 @@ import DataGridFatura from "./container/dataGrid";
 import BarChartFaturaKwh from "./container/barChartKwh";
 import BarChartFaturaValor from "./container/barChartValor";
 import SomatoriaConsumos from "./container/somatoriaConsumo";
+import FileUpload from "./container/fileUpload";
 
 interface IOptionsAC {
   label: String;
@@ -21,15 +22,6 @@ const Dashboard: React.FC = () => {
   const [faturas, setFaturas] = useState<IFatura[]>([]);
   const [faturasAC, setFaturasAC] = useState<IOptionsAC[]>([]);
   const [selectedAC, setSelectedAC] = useState<String | Number>("");
-
-  const fetchFatura = async () => {
-    try {
-      const data = await getFaturaById(1);
-      setFatura(data);
-    } catch (error) {
-      console.error("Erro ao buscar fatura:", error);
-    }
-  };
 
   const fetchFaturas = async () => {
     try {
@@ -99,6 +91,9 @@ const Dashboard: React.FC = () => {
               Buscar
             </Button>
           </Grid>
+        </Grid>
+        <Grid container>
+          <FileUpload />
         </Grid>
         <SomatoriaConsumos faturas={faturas} />
         <Grid container xs={12} justifyContent="center">
